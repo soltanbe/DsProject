@@ -47,7 +47,6 @@ class LoginController extends Controller
     public function authenticate(Request $request)
     {
         $credentials = $request->only('username', 'password');
-        DB::statement('UPDATE user_log SET username = ? ,ip = ? , ');
         if (Auth::attempt($credentials)) {
             // Authentication passed...
             return redirect()->intended('dashboard');
