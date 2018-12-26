@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
                  `email` varchar(30) UNIQUE NOT NULL,
                  `password` varchar(255) NOT NULL,
                  `remember_token` varchar(100) DEFAULT NULL,
+                 friends_list varchar(100) DEFAULT NULL,
                  `created_at` timestamp NULL ,
                  `updated_at` timestamp NULL,
                  PRIMARY KEY (`id`)
