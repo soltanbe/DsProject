@@ -13,17 +13,18 @@ class CreateTables extends Migration
      */
     public function up()
     {
-      /*  if(!Schema::hasTable('user_log')){
+        if(!Schema::hasTable('user_log')){
             DB::statement('CREATE TABLE `user_log` (
                  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                  `username` INT(11)  NOT NULL,
-                 count_retry int(2) DEFAULT 0,
+                 `status_login` INT(1)  NOT NULL,
                  `ip` varchar(30)  NOT NULL,
                  `last_login` timestamp NULL ,
+                
                  PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 
-        }*/
+        }
         if(!Schema::hasTable('hobbies')){
             DB::statement('CREATE TABLE `hobbies` (
                  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,

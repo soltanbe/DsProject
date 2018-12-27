@@ -46,10 +46,25 @@ class LoginController extends Controller
     //override this method to implamet log
     public function authenticate(Request $request)
     {
+        $requestd=$request->all();
+        $clientIP = \Request::ip();
         $credentials = $request->only('username', 'password');
+
         if (Auth::attempt($credentials)) {
             // Authentication passed...
+            DB::table('user_log')->insert(array(
+                'username'=>$requestd['username'],
+                'status_logon'=>1,
+                'ip'=>$clientIP,
+                'last_login'=>date('Y-m-d h:i:s'),
+            ));
             return redirect()->intended('dashboard');
+        }else{
+            DB::table('user_log')->insert(array(
+                'username'=>$requestd['username'],
+                'status_logon'=>0,
+                'ip'=>$clientIP
+            ));
         }
     }
 
