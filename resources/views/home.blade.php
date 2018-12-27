@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="panel panel-default">
                 <div class="panel-heading">Dashboard</div>
 
@@ -60,16 +60,22 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="panel panel-default">
                 <div class="panel-heading">Action</div>
 
                 <div class="panel-body">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary">Primary</button>
-                        <button type="button" class="btn btn-secondary">Secondary</button>
-                        <button type="button" class="btn btn-success">Success</button>
-                        <button type="button" class="btn btn-danger">Danger</button>
+                        <button type="button" id="show_all_friends" class="btn btn-primary">Show All Friend</button>
+                        <button type="button" id="show_brithdays" class="btn btn-secondary">Show Brithdays</button>
+                        <button type="button" id="show_potenial_friends" class="btn btn-success">Show potenial Friends</button>
+                        <button type="button" id="show_upcoming_brithdays" class="btn btn-danger">Show Upcoming Brithdays</button>
+                    </div>
+
+                    <div class="col-md-12">
+                        <h3 id="action_name"></h3>
+                        {{--  <div id="name">{{$user->name}}</div>--}}
+                        <div class="other-frinds" id="action_data"></div>
                     </div>
 
 

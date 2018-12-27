@@ -4,6 +4,78 @@ $( document ).ready(function() {
 const App={
     onLoad:function () {
         this.getAllDataOfUser();
+        $('#show_all_friends').on('click',function () {
+            let csrf_token=$('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: 'showAllFriends',
+                data: {"_token": csrf_token},
+                method: 'POST',
+                dataType: 'JSON',
+                success: function (data) {
+                    if(data['status']=='success'){
+                        $('#action_data').html(Helper.prepareList('showAllFriends',data.data));
+                        $('#action_name').text('show All Friends');
+
+                    }else{
+
+                    }
+                }
+            });
+        })
+        $('#show_brithdays').on('click',function () {
+            let csrf_token=$('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: 'showBrithdays',
+                data: {"_token": csrf_token},
+                method: 'POST',
+                dataType: 'JSON',
+                success: function (data) {
+                    if(data['status']=='success'){
+                        $('#action_data').html(Helper.prepareList('showBrithdays',data.data));
+                        $('#action_name').text('show Brithdays');
+
+                    }else{
+
+                    }
+                }
+            });
+        })
+        $('#show_potenial_friends').on('click',function () {
+            let csrf_token=$('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: 'showPotenialFriends',
+                data: {"_token": csrf_token},
+                method: 'POST',
+                dataType: 'JSON',
+                success: function (data) {
+                    if(data['status']=='success'){
+                        $('#action_data').html(Helper.prepareList('showPotenialFriends',data.data));
+                        $('#action_name').text('show Potenial Friends');
+
+                    }else{
+
+                    }
+                }
+            });
+        })
+        $('#show_upcoming_brithdays').on('click',function () {
+            let csrf_token=$('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: 'showUpcomingBrithdays',
+                data: {"_token": csrf_token},
+                method: 'POST',
+                dataType: 'JSON',
+                success: function (data) {
+                    if(data['status']=='success'){
+                        $('#action_data').html(Helper.prepareList('showUpcomingBrithdays',data.data));
+                        $('#action_name').text('show Upcoming Brithdays');
+
+                    }else{
+
+                    }
+                }
+            });
+        })
 
     },
     getAllDataOfUser:function () {

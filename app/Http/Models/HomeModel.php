@@ -139,6 +139,197 @@ class HomeModel{
 
 
     }
+    public static function showAllFriends($id){
+        try {
+            $allFrinds=DB::select("SELECT 
+              id,
+              `name`,
+              username,
+              email,
+              friends_list,
+              DATE_FORMAT(brithday, '%d/%m/%Y') as brithday,
+              user_hobbies.hobbies
+ 
+            FROM users 
+            INNER JOIN user_hobbies ON (user_hobbies.user_id=id)
+            ");
+        }
+        catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+
+        return $allFrinds;
+    }
+    public static function showUpcomingBrithdays($id){
+        try {
+            $allFrinds=DB::select("SELECT 
+              id,
+              `name`,
+              username,
+              email,
+              friends_list,
+              DATE_FORMAT(brithday, '%d/%m/%Y') as brithday1,
+              user_hobbies.hobbies
+            FROM users 
+            INNER JOIN user_hobbies ON (user_hobbies.user_id=id)
+            WHERE  DAY(brithday)>=DAY(NOW()) AND MONTH (brithday)>=MONTH(NOW())
+            ");
+        }
+        catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+
+        return $allFrinds;
+    }
+    public static function showPotenialFriends($id){
+        try {
+            $user=DB::select("SELECT 
+              id,
+              brithday,
+              user_hobbies.hobbies
+            FROM users 
+            INNER JOIN user_hobbies ON (user_hobbies.user_id=id)
+            where id=?",array($id));
+        }
+        catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+
+        $user=$user[0];
+
+
+
+        $minusFive = date('m-d', mktime(0, 0, 0, date('m',strtotime($user->brithday)), date('d',strtotime($user->brithday)) - 5));
+        $plusFive = date('m-d', mktime(0, 0, 0, date('m',strtotime($user->brithday)), date('d',strtotime($user->brithday)) + 5));
+
+        $hobbbiesArr=explode(',',$user->hobbies);
+        $whereStr='';
+        $start=false;
+        $params=array();
+        foreach ($hobbbiesArr as $d){
+
+            $whereStr.= $start==false?'AND (user_hobbies.hobbies LIKE ?':' OR user_hobbies.hobbies LIKE ?';
+            $params[]="%$d%";
+            $start=true;
+
+        }
+        if($start==true){
+            $whereStr.=')';
+        }
+
+        try {
+            $allFrinds=DB::select("SELECT 
+              id,
+              `name`,
+              username,
+              email,
+              friends_list,
+              DATE_FORMAT(brithday, '%d/%m/%Y') as brithday1,
+              user_hobbies.hobbies
+ 
+            FROM users 
+            INNER JOIN user_hobbies ON (user_hobbies.user_id=id)
+            WHERE DATE_FORMAT(brithday, '%d-%m') BETWEEN  $minusFive AND $plusFive $whereStr  
+            ",$params);
+        }
+        catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+
+        return $allFrinds;
+    }
+    public static function showBrithdays($id){
+        $friendListStr="";
+        $user=DB::select("SELECT 
+              id,
+              `name`,
+              username,
+              email,
+              friends_list,
+              DATE_FORMAT(brithday, '%d/%m/%Y') as brithday,
+              user_hobbies.hobbies
+ 
+            FROM users 
+            INNER JOIN user_hobbies ON (user_hobbies.user_id=id)
+            where id=?",array($id));
+        $user=$user[0];
+        $friendListStr.=$user->friends_list; //level1********************************************
+
+        $frindsList=explode(',',$user->friends_list);
+        $whereStr=rtrim(str_repeat('?,',count($frindsList)),',');
+        $frinds=DB::select("SELECT 
+              id,
+              `name`,
+              username,
+              email,
+              friends_list,
+              DATE_FORMAT(brithday, '%d/%m/%Y') as brithday,
+              user_hobbies.hobbies
+ 
+            FROM users 
+            INNER JOIN user_hobbies ON (user_hobbies.user_id=id)
+            where id in ($whereStr) ",$frindsList);
+        foreach ($frinds as $f){
+            if(!empty($f->friends_list)){
+                $friendListStr.=','.$f->friends_list;//level2************************************************
+
+
+                $frindsList1=explode(',',$f->friends_list);
+                $whereStr1=rtrim(str_repeat('?,',count($frindsList1)),',');
+                $frinds1=DB::select("SELECT 
+                      id,
+                      `name`,
+                      username,
+                      email,
+                      friends_list,
+                      DATE_FORMAT(brithday, '%d/%m/%Y') as brithday,
+                      user_hobbies.hobbies
+         
+                    FROM users 
+                    INNER JOIN user_hobbies ON (user_hobbies.user_id=id)
+                    where id in ($whereStr1) ",$frindsList1);
+                foreach ($frinds1 as $f1){
+                    if(!empty($f1->friends_list)) {
+                        $friendListStr .= ',' . $f1->friends_list;//level3****************************************************
+
+                    }
+                 }
+
+            }
+
+
+        }
+        $frindsListfinal=explode(',',$friendListStr);
+        $frindsListfinal=array_unique($frindsListfinal);
+        $frindsListfinalArr=array();
+        foreach ($frindsListfinal as $ff){
+            $frindsListfinalArr[]=$ff;
+        }
+        unset($frindsListfinal);
+        unset($friendListStr);
+        //after i get all frind ids after 2 level
+        $whereStr=rtrim(str_repeat('?,',count($frindsListfinalArr)),',');
+        $sql="SELECT 
+              id,
+              `name`,
+              username,
+              email,
+              friends_list,
+              DATE_FORMAT(brithday, '%d/%m/%Y') as brithday1,
+              user_hobbies.hobbies
+             
+ 
+            FROM users 
+            INNER JOIN user_hobbies ON (user_hobbies.user_id=id)
+            where id in ($whereStr) AND DATE_FORMAT(brithday, '%d/%m')>=DATE_FORMAT(NOW(), '%d/%m') ORDER BY DATE_FORMAT(brithday, '%m') ASC";
+        $frindsFinal=DB::select($sql,$frindsListfinalArr);
+
+        return $frindsFinal;
+    }
 
 
 }

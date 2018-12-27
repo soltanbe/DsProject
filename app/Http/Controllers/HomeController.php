@@ -46,6 +46,42 @@ class HomeController extends Controller
             array('status'=>'success','data'=>$user)
         );
     }
+    public function showAllFriends()
+    {
+        $dataUser=HomeModel::showAllFriends(Auth::id());
+        if(!empty($dataUser) && is_array($dataUser)){
+            $result= array('status'=>'success','data'=>$dataUser);
+        }else{
+            $result= array('status'=>'error','data'=>$dataUser);
+        }
+        return response()->json(
+            $result
+        );
+    }
+    public function showBrithdays()
+    {
+        $dataUser=HomeModel::showBrithdays(Auth::id());
+        $result= array('status'=>'success','data'=>$dataUser);
+        return response()->json(
+            $result
+        );
+    }
+    public function showPotenialFriends()
+    {
+        $dataUser=HomeModel::showPotenialFriends(Auth::id());
+        $result= array('status'=>'success','data'=>$dataUser);
+        return response()->json(
+            $result
+        );
+    }
+    public function showUpcomingBrithdays()
+    {
+        $dataUser=HomeModel::showUpcomingBrithdays(Auth::id());
+        $result= array('status'=>'success','data'=>$dataUser);
+        return response()->json(
+            $result
+        );
+    }
     public function addFriend(Request $request)
     {
         $requestd=$request->all();

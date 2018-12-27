@@ -39,6 +39,36 @@ const Helper={
                 });
 
                 break;
+            case 'showAllFriends':
+                dataList.forEach(function (h) {
+                    Html+='<li class="list-group-item">' +
+                        '<div class="col-md-3">'+
+                        h.name +
+                        '</div>'+
+                        '<div class="col-md-3">'+
+                        h.brithday +
+                        '</div>'+
+                        '<div class="col-md-3">'+
+                        h.email +
+                        '</div>'+
+                        '<div class="col-md-3">'+
+                        h.username +
+                        '</div>';
+
+                });
+                break;
+                case 'showUpcomingBrithdays':
+                case 'showPotenialFriends':
+                dataList.forEach(function (h) {
+                    Html+='<li class="list-group-item">' +
+                        '<div class="col-md-3">'+
+                        h.name +
+                        '</div>'+
+                        '<div class="col-md-3">'+
+                        h.brithday1 +
+                        '</div>';
+                });
+                break;
         }
 
 

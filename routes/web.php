@@ -16,6 +16,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/getAllDataOfUser', 'HomeController@getAllDataOfUser');
     Route::post('/addFriend', 'HomeController@addFriend');
     Route::post('/deleteFriend', 'HomeController@deleteFriend');
+    Route::post('/showAllFriends', 'HomeController@showAllFriends');
+    Route::post('/showBrithdays', 'HomeController@showBrithdays');
+    Route::post('/showPotenialFriends', 'HomeController@showPotenialFriends');
+    Route::post('/showUpcomingBrithdays', 'HomeController@showUpcomingBrithdays');
 });
 Auth::routes();
 
