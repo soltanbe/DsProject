@@ -12,7 +12,12 @@
 */
 
 Route::get('/','HomeController@index');
-
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/getAllDataOfUser', 'HomeController@getAllDataOfUser');
+    Route::post('/addFriend', 'HomeController@addFriend');
+    Route::post('/deleteFriend', 'HomeController@deleteFriend');
+});
 Auth::routes();
+
 
 Route::get('/home', 'HomeController@index')->name('home');
