@@ -46,7 +46,7 @@ const Helper={
                         h.name +
                         '</div>'+
                         '<div class="col-md-3">'+
-                        h.brithday +
+                        h.brithday1 +
                         '</div>'+
                         '<div class="col-md-3">'+
                         h.email +
@@ -59,6 +59,8 @@ const Helper={
                 break;
                 case 'showUpcomingBrithdays':
                 case 'showPotenialFriends':
+                case 'showBrithdays':
+
                 dataList.forEach(function (h) {
                     Html+='<li class="list-group-item">' +
                         '<div class="col-md-3">'+

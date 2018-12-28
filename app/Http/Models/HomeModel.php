@@ -147,7 +147,7 @@ class HomeModel{
               username,
               email,
               friends_list,
-              DATE_FORMAT(brithday, '%d/%m/%Y') as brithday,
+              DATE_FORMAT(brithday, '%d/%m/%Y') as brithday1,
               user_hobbies.hobbies
  
             FROM users 
@@ -201,10 +201,10 @@ class HomeModel{
         $user=$user[0];
 
 
-
+/*
         $minusFive = date('m-d', mktime(0, 0, 0, date('m',strtotime($user->brithday)), date('d',strtotime($user->brithday)) - 5));
-        $plusFive = date('m-d', mktime(0, 0, 0, date('m',strtotime($user->brithday)), date('d',strtotime($user->brithday)) + 5));
-
+        $plusFive = date('m-d', mktime(0, 0, 0, date('m',strtotime($user->brithday)), date('d',strtotime($user->brithday)) + 5));*/
+        $year=DATE('Y');
         $hobbbiesArr=explode(',',$user->hobbies);
         $whereStr='';
         $start=false;
@@ -232,7 +232,7 @@ class HomeModel{
  
             FROM users 
             INNER JOIN user_hobbies ON (user_hobbies.user_id=id)
-            WHERE DATE_FORMAT(brithday, '%d-%m') BETWEEN  $minusFive AND $plusFive $whereStr  
+            WHERE DATE(DATE_FORMAT(brithday,'$year-%m-%d')) BETWEEN DATE(DATE_FORMAT(DATE_ADD(DATE(NOW()), INTERVAL -5 DAY),'%Y-%m-%d')) AND DATE(DATE_FORMAT(DATE_ADD(DATE(NOW()), INTERVAL +5 DAY),'%Y-%m-%d')) $whereStr  
             ",$params);
         }
         catch (\Exception $e) {
@@ -309,8 +309,9 @@ class HomeModel{
         foreach ($frindsListfinal as $ff){
             $frindsListfinalArr[]=$ff;
         }
+
         unset($frindsListfinal);
-        unset($friendListStr);
+        $year=DATE('Y');
         //after i get all frind ids after 2 level
         $whereStr=rtrim(str_repeat('?,',count($frindsListfinalArr)),',');
         $sql="SELECT 
@@ -321,11 +322,9 @@ class HomeModel{
               friends_list,
               DATE_FORMAT(brithday, '%d/%m/%Y') as brithday1,
               user_hobbies.hobbies
-             
- 
             FROM users 
             INNER JOIN user_hobbies ON (user_hobbies.user_id=id)
-            where id in ($whereStr) AND DATE_FORMAT(brithday, '%d/%m')>=DATE_FORMAT(NOW(), '%d/%m') ORDER BY DATE_FORMAT(brithday, '%m') ASC";
+            where id in ($whereStr) AND DATE(DATE_FORMAT(brithday,'$year-%m-%d')) BETWEEN DATE(DATE_FORMAT(DATE(NOW()),'%Y-%m-%d')) AND DATE(DATE_FORMAT(DATE_ADD(DATE(NOW()), INTERVAL 14 DAY),'%Y-%m-%d'))   ORDER BY DATE_FORMAT(brithday, '%m') ASC";
         $frindsFinal=DB::select($sql,$frindsListfinalArr);
 
         return $frindsFinal;

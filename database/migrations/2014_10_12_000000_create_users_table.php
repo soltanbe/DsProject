@@ -66,7 +66,7 @@ class CreateUsersTable extends Migration
             );
             $frinds_of_user=array_unique($frinds_of_user);
             DB::update('UPDATE users SET friends_list=? where id=?',array(implode(',',$frinds_of_user),$u->id));
-           
+
         }
 
 

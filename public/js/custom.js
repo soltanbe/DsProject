@@ -22,6 +22,7 @@ const App={
                 }
             });
         })
+
         $('#show_brithdays').on('click',function () {
             let csrf_token=$('meta[name="csrf-token"]').attr('content');
             $.ajax({
@@ -31,6 +32,7 @@ const App={
                 dataType: 'JSON',
                 success: function (data) {
                     if(data['status']=='success'){
+                        console.log(Helper.prepareList('showBrithdays',data.data))
                         $('#action_data').html(Helper.prepareList('showBrithdays',data.data));
                         $('#action_name').text('show Brithdays');
 
