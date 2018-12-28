@@ -51,6 +51,25 @@ class CreateUsersTable extends Migration
                 'password' => bcrypt('soltan'.$i),
             ]);
         }
+        $users=DB::select('SELECT * from users');
+        $users_arr=array();
+        foreach ($users as $h){
+            $users_arr[]=$h->id;
+        }
+        foreach ($users as $u){
+            $frinds_of_user=array(
+                $users_arr[array_rand($users_arr)],
+                $users_arr[array_rand($users_arr)],
+                $users_arr[array_rand($users_arr)],
+                $users_arr[array_rand($users_arr)],
+                $users_arr[array_rand($users_arr)],
+            );
+            $frinds_of_user=array_unique($frinds_of_user);
+            DB::update('UPDATE users SET friends_list=? where id=?',array(implode(',',$frinds_of_user),$u->id));
+           
+        }
+
+
     }
 
     /**
