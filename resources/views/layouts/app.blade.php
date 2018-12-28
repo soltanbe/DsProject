@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.js"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/Helper.js') }}"></script>
 </head>
 <body>
     <div id="app">
@@ -78,9 +81,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.js"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/Helper.js') }}"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
+
+
 </body>
 </html>
